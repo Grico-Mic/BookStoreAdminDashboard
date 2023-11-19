@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BookStoreAdminDashboard.Models;
 
 namespace BookStoreAdminDashboard.Data
 {
@@ -12,5 +13,6 @@ namespace BookStoreAdminDashboard.Data
             : base(options)
         {
         }
+        public DbSet<BookStoreAdminDashboard.Models.BookViewModel> BookViewModel { get; set; }
     }
 }
