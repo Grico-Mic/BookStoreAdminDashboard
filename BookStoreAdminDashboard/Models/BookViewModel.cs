@@ -8,6 +8,7 @@ namespace BookStoreAdminDashboard.Models
         [Required]
         public string Title { get; set; }
         [Required]
+        [Display(Name = "Book Description")]
         public string Description { get; set; }
         [Required]
         public string Author { get; set; }
