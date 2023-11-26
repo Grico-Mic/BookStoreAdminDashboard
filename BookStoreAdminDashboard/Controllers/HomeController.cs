@@ -1,10 +1,12 @@
 ﻿using BookStoreAdminDashboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BookStoreAdminDashboard.Controllers
@@ -12,7 +14,12 @@ namespace BookStoreAdminDashboard.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        public string BookStoreApiBaseUrl { get; set; }
         
+        public HomeController(IConfiguration configuration)
+        {
+            BookStoreApiBaseUrl = configuration.GetValue<string>("BookStoreApiBaseUrl");
+        }
 
         public async Task<IActionResult>  Index(string successMessage)
         {
@@ -61,6 +68,7 @@ namespace BookStoreAdminDashboard.Controllers
             if (ModelState.IsValid)
             {
                 var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", "49b0c570-36ad-481c-9be7-b08b7f401d0d");
                 var httpResponse = await httpClient.PostAsJsonAsync($"https://localhost:44372/api/books", bookViewModel);
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -99,6 +107,7 @@ namespace BookStoreAdminDashboard.Controllers
             if (ModelState.IsValid)
             {
                 var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", "49b0c570-36ad-481c-9be7-b08b7f401d0d");
                 var httpResponse = await httpClient.PutAsJsonAsync($"https://localhost:44372/api/books", bookViewModel);
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -117,6 +126,7 @@ namespace BookStoreAdminDashboard.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", "49b0c570-36ad-481c-9be7-b08b7f401d0d");
             var httpResponse = await httpClient.DeleteAsync($"https://localhost:44372/api/books/{id}");
 
             if (httpResponse.IsSuccessStatusCode)
